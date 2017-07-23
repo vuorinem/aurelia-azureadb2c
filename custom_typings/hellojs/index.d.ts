@@ -5,9 +5,13 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.3
 
-declare var hello: hellojs.HelloJSStatic;
+// Customized for using as custom typing definition outside node_modules/@types
 
-declare namespace hellojs {
+declare module 'hellojs' {
+    const hello: HelloJSStatic;
+
+    export = hello;
+
     interface HelloJSUtils {
         extend(r: object, ...a: any[]): any;
         error(code: number, message: string): { code: number, message: string };
@@ -104,12 +108,6 @@ declare namespace hellojs {
         api(options: object): PromiseLike<any>;
         api(path?: string, method?: string, data?: object, callback?: (json: any) => void): PromiseLike<any>;
         api(path?: string, query?: object, method?: string, data?: object, timeout?: number, callback?: (json: any) => void): PromiseLike<any>;
-    }
-
-    interface HelloJSStaticNamed {
-        login(option?: HelloJSLoginOptions, callback?: () => void): void;
-        logout(callback?: () => void): void;
-        getAuthResponse(): any;
     }
 
     interface HelloJSOAuthDef {
