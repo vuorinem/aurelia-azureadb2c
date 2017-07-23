@@ -12,4 +12,8 @@ export class App {
   private async login() {
     await this.authService.login();
   }
+
+  private async logout(){
+    await this.authService.logout();
+  }
 }

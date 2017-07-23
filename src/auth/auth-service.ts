@@ -30,11 +30,15 @@ export class AuthService {
     }
 
     public async login() {
-        hello('azureAD').login()
+        await hello.login('azureAD');
 
-        return hello.login('azureAD', {}, () => {
-            this.handleAuthenticationResponse()
-        });
+        this.handleAuthenticationResponse();
+    }
+
+    public async logout() {
+        await hello.logout('azureAD');
+
+        this.handleAuthenticationResponse();
     }
 
     private handleAuthenticationResponse() {
