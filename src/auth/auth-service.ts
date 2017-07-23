@@ -62,6 +62,6 @@ export class AuthService {
     }
 
     private getOauthUrl(tenant: string, policy: string) {
-        return `https://login.microsoftonline.com/tfp/${tenant}/${policy}/oauth2/v2.0`;
+        return `https://login.microsoftonline.com/te/${tenant}/${policy}/oauth2/v2.0`;
     }
 }
