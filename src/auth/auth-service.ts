@@ -12,6 +12,7 @@ export class AuthService {
                 oauth: {
                     version: 2,
                     auth: this.getAuthUrl(authConfig.adTenantName, authConfig.adPolicyName),
+                    grant: this.getGrantUrl(authConfig.adTenantName, authConfig.adPolicyName),
                 },
                 scope_delim: ' ',
             }
@@ -53,6 +54,14 @@ export class AuthService {
     }
 
     private getAuthUrl(tenant: string, policy: string) {
-        return `https://login.microsoftonline.com/tfp/${tenant}/${policy}/oauth2/v2.0/authorize`;
+        return this.getOauthUrl(tenant, policy) + '/authorize';
+    }
+
+    private getGrantUrl(tenant: string, policy: string) {
+        return this.getOauthUrl(tenant, policy) + '/token';
+    }
+
+    private getOauthUrl(tenant: string, policy: string) {
+        return `https://login.microsoftonline.com/tfp/${tenant}/${policy}/oauth2/v2.0`;
     }
 }
