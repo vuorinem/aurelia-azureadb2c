@@ -111,6 +111,7 @@
           "aurelia-task-queue",
           "aurelia-templating",
           "aurelia-templating-binding",
+          "hellojs",
           "text",
           {
             "name": "aurelia-templating-resources",
