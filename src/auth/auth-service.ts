@@ -16,16 +16,15 @@ export class AuthService {
                     grant: this.getGrantUrl(authConfig.adTenantName, authConfig.adPolicyName),
                 },
                 scope_delim: ' ',
-                logout: (callback: () => void) => {
+                logout: () => {
                     // Azure AD B2C doesn't support logging out in iframe,
-                    // so use redirect instead. Callback handles clearing cache.
-                    
-                    callback();
-
+                    // so use redirect instead.
                     PLATFORM.location.assign(
                         this.getLogoutUrl(authConfig.adTenantName, authConfig.adPolicyName,
                             authConfig.adRedirectUri)
                     );
+
+                    return true; // Tell hello.js to handle the rest
                 },
             }
         });
