@@ -42,8 +42,6 @@ export class AuthService {
     }
 
     public getAuthenticationInterceptor(): Interceptor {
-        const authService = this;
-
         return {
             request(request: Request) {
                 const authResponse = hello('azureAD').getAuthResponse();
