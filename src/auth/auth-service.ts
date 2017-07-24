@@ -1,11 +1,16 @@
-import { PLATFORM } from "aurelia-framework";
+import { computedFrom, PLATFORM } from "aurelia-framework";
 import { Interceptor } from "aurelia-fetch-client";
 import * as hello from "hellojs";
 import authConfig from "./auth-config";
 
 export class AuthService {
-    private isAuthenticated: boolean = false;
+    private isAuthenticatedInternal: boolean = false;
     private name: string;
+
+    @computedFrom('isAuthenticatedInternal')
+    public get isAuthenticated() {
+        return this.isAuthenticatedInternal;
+    }
 
     constructor() {
         // Configure Azure AD B2C module for hello.js
@@ -72,16 +77,16 @@ export class AuthService {
         const response = hello('azureAD').getAuthResponse();
 
         if (!response) {
-            this.isAuthenticated = false;
+            this.isAuthenticatedInternal = false;
             return;
         }
 
         if (!('access_token' in response) || !response.access_token) {
-            this.isAuthenticated = false;
+            this.isAuthenticatedInternal = false;
             return;
         }
 
-        this.isAuthenticated = true;
+        this.isAuthenticatedInternal = true;
     }
 
     private getAuthUrl(tenant: string, policy: string) {
