@@ -1,3 +1,4 @@
+import { PLATFORM } from "aurelia-framework";
 import * as hello from "hellojs";
 import authConfig from "./auth-config";
 
@@ -15,6 +16,17 @@ export class AuthService {
                     grant: this.getGrantUrl(authConfig.adTenantName, authConfig.adPolicyName),
                 },
                 scope_delim: ' ',
+                logout: (callback: () => void) => {
+                    // Azure AD B2C doesn't support logging out in iframe,
+                    // so use redirect instead. Callback handles clearing cache.
+                    
+                    callback();
+
+                    PLATFORM.location.assign(
+                        this.getLogoutUrl(authConfig.adTenantName, authConfig.adPolicyName,
+                            authConfig.adRedirectUri)
+                    );
+                },
             }
         });
 
@@ -36,7 +48,7 @@ export class AuthService {
     }
 
     public async logout() {
-        await hello.logout('azureAD');
+        await hello.logout('azureAD', { force: true });
 
         this.handleAuthenticationResponse();
     }
@@ -63,6 +75,11 @@ export class AuthService {
 
     private getGrantUrl(tenant: string, policy: string) {
         return this.getOauthUrl(tenant, policy) + '/token';
+    }
+
+    private getLogoutUrl(tenant: string, policy: string, redirectUri: string) {
+        return this.getOauthUrl(tenant, policy) + '/logout'
+            + '?post_logout_redirect_uri=' + encodeURI(redirectUri);
     }
 
     private getOauthUrl(tenant: string, policy: string) {
