@@ -2,9 +2,19 @@
   <h1>
     Welcome,
     <span hide.bind="authService.isAuthenticated">stanger</span>
+    <span show.bind="authService.isAuthenticated">make a call!</span>
   </h1>
 
   <button click.delegate="login()" hide.bind="authService.isAuthenticated">Identify yourself</button>
-
   <button click.delegate="logout()" show.bind="authService.isAuthenticated">Forget me</button>
+
+  <div>
+    <button click.delegate="callApi()">Call API</button>
+
+    <ul>
+      <li repeat.for="response of apiResponses">
+        ${ response.status }: ${ response.statusText }
+      </li>
+    </ul>
+  </div>
 </template>
