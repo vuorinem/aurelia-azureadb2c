@@ -1,4 +1,5 @@
 import { PLATFORM } from "aurelia-framework";
+import { Interceptor } from "aurelia-fetch-client";
 import * as hello from "hellojs";
 import authConfig from "./auth-config";
 
@@ -38,6 +39,23 @@ export class AuthService {
         });
 
         this.handleAuthenticationResponse();
+    }
+
+    public getAuthenticationInterceptor(): Interceptor {
+        const authService = this;
+
+        return {
+            request(request: Request) {
+                const authResponse = hello('azureAD').getAuthResponse();
+
+                if (authResponse && authResponse.access_token) {
+                    request.headers.append('Authorization',
+                        `Bearer ${authResponse.access_token}`);
+                }
+
+                return request;
+            },
+        };
     }
 
     public async login() {
